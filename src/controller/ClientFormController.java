@@ -22,24 +22,25 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientFormController extends Thread{
+    public VBox clientVBox;
     public TextField txtMessage;
     public Label chatName;
     public TextArea txtMsgArea;
-    public VBox chatVBox;
+    public VBox vBoxChat;
 
     BufferedReader reader;
-    PrintWriter printWriter;
+    PrintWriter writer;
     Socket socket;
 
-    private FileChooser imgChooser;
-    private File imgPath;
+    private FileChooser fileChooser;
+    private File filePath;
 
     public void sendMessageOnAction(MouseEvent mouseEvent) {
-        String messageText = txtMessage.getText();
-        printWriter.println(chatName.getText() + ": " + messageText);
+        String msg = txtMessage.getText();
+        writer.println(chatName.getText() + ": " + msg);
         txtMessage.clear();
 
-        if(messageText.equals("!Bye") || (messageText.equals("logout"))) {
+        if(msg.equalsIgnoreCase("!Bye") || (msg.equalsIgnoreCase("logout"))) {
             System.exit(0);
 
         }
@@ -50,13 +51,13 @@ public class ClientFormController extends Thread{
         this.chatName.setText(userName);
         try {
             socket = new Socket("localhost", 9000);
-            System.out.println("server connected!");
+            System.out.println("Socket is connected with server!");
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            writer = new PrintWriter(socket.getOutputStream(), true);
 
             this.start();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -66,42 +67,43 @@ public class ClientFormController extends Thread{
 
 
                 String message = reader.readLine();
-                String[] splits = message.split(" ");
-                String senderName = splits[0];
+                String[] msgDiv = message.split(" ");
+                String senderName = msgDiv[0];
 
 
-                StringBuilder fullMessage = new StringBuilder();
-                for (int i = 1; i < splits.length; i++) {
-                    fullMessage.append(splits[i]+" ");
+                StringBuilder fullMsg = new StringBuilder();
+                for (int i = 1; i < msgDiv.length; i++) {
+                    fullMsg.append(msgDiv[i]+" ");
                 }
 
 
-                String[] msgArray = message.split(" ");
-                String store = "";
-                for (int i = 0; i < msgArray.length - 1; i++) {
-                    store += msgArray[i + 1] + " ";
+                String[] msgToAr = message.split(" ");
+                String st = "";
+                for (int i = 0; i < msgToAr.length - 1; i++) {
+                    st += msgToAr[i + 1] + " ";
                 }
 
 
-                Text text = new Text(store);
-                String firstletters = "";
-                if (store.length() > 3) {
-                    firstletters = store.substring(0, 3);
+                Text text = new Text(st);
+                String firstChars = "";
+                if (st.length() > 3) {
+                    firstChars = st.substring(0, 3);
 
                 }
 
 
-                if (firstletters.equalsIgnoreCase("pic")) {
+                if (firstChars.equalsIgnoreCase("pic")) {
+                    //for the Images
 
-                    store = store.substring(3, store.length() - 1);
+                    st = st.substring(3, st.length() - 1);
 
 
-                    File file = new File(store);
+                    File file = new File(st);
                     Image image = new Image(file.toURI().toString());
 
                     ImageView imageView = new ImageView(image);
 
-                    imageView.setFitHeight(200);
+                    imageView.setFitHeight(150);
                     imageView.setFitWidth(200);
 
 
@@ -109,9 +111,9 @@ public class ClientFormController extends Thread{
                     hBox.setAlignment(Pos.BOTTOM_RIGHT);
 
 
-                    if (!senderName.equals(chatName.getText())) {
+                    if (!senderName.equalsIgnoreCase(chatName.getText())) {
 
-                        chatVBox.setAlignment(Pos.TOP_LEFT);
+                        vBoxChat.setAlignment(Pos.TOP_LEFT);
                         hBox.setAlignment(Pos.CENTER_LEFT);
 
 
@@ -122,75 +124,78 @@ public class ClientFormController extends Thread{
                     } else {
                         hBox.setAlignment(Pos.BOTTOM_RIGHT);
                         hBox.getChildren().add(imageView);
+                        Text text1 = new Text(" ");
+                        hBox.getChildren().add(text1);
+
+
                     }
 
-                    Platform.runLater(() -> chatVBox.getChildren().addAll(hBox));
+                    Platform.runLater(() -> vBoxChat.getChildren().addAll(hBox));
 
 
                 } else {
 
-                    TextFlow textFlow = new TextFlow();
+                    TextFlow tempFlow = new TextFlow();
 
 
-                    if (!senderName.equals(chatName.getText() + ":")) {
+                    if (!senderName.equalsIgnoreCase(chatName.getText() + ":")) {
                         Text txtName = new Text(senderName + " ");
                         txtName.getStyleClass().add("txtName");
-                        textFlow.getChildren().add(txtName);
+                        tempFlow.getChildren().add(txtName);
 
-                        textFlow.setStyle(
-                                "-fx-background-color: #FCC8D1;" +
+                        tempFlow.setStyle( "-fx-background-color: #FCC8D1;" +
                                 " -fx-background-radius: 5px"
                         );
 
-                        textFlow.setPadding(new Insets(3,10,3,10));
+                        tempFlow.setPadding(new Insets(3,10,3,10));
                     }
 
-                    textFlow.getChildren().add(text);
-                    textFlow.setMaxWidth(200);
+                    tempFlow.getChildren().add(text);
+                    tempFlow.setMaxWidth(200);
 
-                    TextFlow flow = new TextFlow(textFlow);
+                    TextFlow flow = new TextFlow(tempFlow);
 
                     HBox hBox = new HBox(12);
 
 
 
 
-                    if (!senderName.equals(chatName.getText() + ":")) {
+                    if (!senderName.equalsIgnoreCase(chatName.getText() + ":")) {
 
 
-                        chatVBox.setAlignment(Pos.TOP_LEFT);
+                        vBoxChat.setAlignment(Pos.TOP_LEFT);
                         hBox.setAlignment(Pos.CENTER_LEFT);
                         hBox.getChildren().add(flow);
                         hBox.setPadding(new Insets(2,5,2,10));
 
                     } else {
 
-                        Text text2 = new Text(""+fullMessage);
+                        Text text2 = new Text(fullMsg + " ");
                         TextFlow flow2 = new TextFlow(text2);
                         hBox.setAlignment(Pos.BOTTOM_RIGHT);
                         hBox.getChildren().add(flow2);
                         hBox.setPadding(new Insets(2,5,2,10));
 
-                        flow2.setStyle(
-                                "-fx-background-color: #F4EEE0;" +
+                        flow2.setStyle( "-fx-background-color: #F4EEE0;" +
                                 "-fx-background-radius: 5px");
                         flow2.setPadding(new Insets(3,10,3,10));
 
                     }
 
-                    Platform.runLater(() -> chatVBox.getChildren().addAll(hBox));
+                    Platform.runLater(() -> vBoxChat.getChildren().addAll(hBox));
                 }
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
     public void selectImgOnAction(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        imgChooser = new FileChooser();
-        this.imgPath = imgChooser.showOpenDialog(stage);
-        printWriter.println(chatName.getText() + " " + "pic" + imgPath.getPath());
+        fileChooser = new FileChooser();
+        //fileChooser.setTitle("Open Image");
+        this.filePath = fileChooser.showOpenDialog(stage);
+        writer.println(chatName.getText() + " " + "pic" + filePath.getPath());
     }
 }
