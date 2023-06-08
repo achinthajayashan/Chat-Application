@@ -23,6 +23,7 @@ public class ClientFormController extends Thread{
     public TextField txtMessage;
     public Label chatName;
     public TextArea txtMsgArea;
+    public VBox vBoxChat;
 
     BufferedReader reader;
     PrintWriter writer;
@@ -57,136 +58,134 @@ public class ClientFormController extends Thread{
     public void run() {
         try {
             while (true) {
-                String message = reader.readLine();
-                txtMsgArea.appendText("\nclient :" + message);
 
 
-//                String msg = reader.readLine();
-//                String[] tokens = msg.split(" ");
-//                String cmd = tokens[0];
-//
-//
-//                StringBuilder fullMsg = new StringBuilder();
-//                for (int i = 1; i < tokens.length; i++) {
-//                    fullMsg.append(tokens[i] + " ");
-//                }
-//
-//
-//                String[] msgToAr = msg.split(" ");
-//                String st = "";
-//                for (int i = 0; i < msgToAr.length - 1; i++) {
-//                    st += msgToAr[i + 1] + " ";
-//                }
-//
-//
-//                Text text = new Text(st);
-//                String firstChars = "";
-//                if (st.length() > 3) {
-//                    firstChars = st.substring(0, 3);
-//
-//                }
-//
-//
-//                if (firstChars.equalsIgnoreCase("img")) {
-//                    //for the Images
-//
-//                    st = st.substring(3, st.length() - 1);
-//
-//
-//                    File file = new File(st);
-//                    Image image = new Image(file.toURI().toString());
-//
-//                    ImageView imageView = new ImageView(image);
-//
-//                    imageView.setFitHeight(150);
-//                    imageView.setFitWidth(200);
-//
-//
-//                    HBox hBox = new HBox(10);
-//                    hBox.setAlignment(Pos.BOTTOM_RIGHT);
-//
-//
-//                    if (!cmd.equalsIgnoreCase(chatName.getText())) {
-//
-//                        clientVBox.setAlignment(Pos.TOP_LEFT);
-//                        hBox.setAlignment(Pos.CENTER_LEFT);
-//
-//
-//                        Text text1 = new Text("  " + cmd + " :");
-//                        hBox.getChildren().add(text1);
-//                        hBox.getChildren().add(imageView);
-//
-//                    } else {
-//                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
-//                        hBox.getChildren().add(imageView);
-//                        Text text1 = new Text(": Me ");
-//                        hBox.getChildren().add(text1);
-//
-//
-//                    }
-//
-//                    Platform.runLater(() -> clientVBox.getChildren().addAll(hBox));
-//
-//
-//                } else {
-//
-//                    TextFlow tempFlow = new TextFlow();
-//
-//
-//                    if (!cmd.equalsIgnoreCase(chatName.getText() + ":")) {
-//                        Text txtName = new Text(cmd + " ");
-//                        txtName.getStyleClass().add("txtName");
-//                        tempFlow.getChildren().add(txtName);
-//
-//                        tempFlow.setStyle("-fx-color: rgb(239,242,255);" +
-//                                "-fx-background-color: rgb(15,125,242);" +
-//                                " -fx-background-radius: 10px");
-//                        tempFlow.setPadding(new Insets(3,10,3,10));
-//                    }
-//
-//                    tempFlow.getChildren().add(text);
-//                    tempFlow.setMaxWidth(200);
-//
-//                    TextFlow flow = new TextFlow(tempFlow);
-//
-//                    HBox hBox = new HBox(12);
-//
-//
-//
-//
-//                    if (!cmd.equalsIgnoreCase(chatName.getText() + ":")) {
-//
-//
-//                        clientVBox.setAlignment(Pos.TOP_LEFT);
-//                        hBox.setAlignment(Pos.CENTER_LEFT);
-//                        hBox.getChildren().add(flow);
-//                        hBox.setPadding(new Insets(2,5,2,10));
-//
-//                    } else {
-//
-//                        Text text2 = new Text(fullMsg + ": Me");
-//                        TextFlow flow2 = new TextFlow(text2);
-//                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
-//                        hBox.getChildren().add(flow2);
-//                        hBox.setPadding(new Insets(2,5,2,10));
-//
-//                        flow2.setStyle("-fx-color: rgb(239,242,255);" +
-//                                "-fx-background-color: rgb(191,241,9);" +
-//                                "-fx-background-radius: 10px");
-//                        flow2.setPadding(new Insets(3,10,3,10));
-//
-//                    }
-//
-//                    Platform.runLater(() -> clientVBox.getChildren().addAll(hBox));
-//                }
-//            }
+                String msg = reader.readLine();
+                String[] tokens = msg.split(" ");
+                String cmd = tokens[0];
 
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+                StringBuilder fullMsg = new StringBuilder();
+                for (int i = 1; i < tokens.length; i++) {
+                    fullMsg.append(tokens[i]+" ");
+                }
+
+
+                String[] msgToAr = msg.split(" ");
+                String st = "";
+                for (int i = 0; i < msgToAr.length - 1; i++) {
+                    st += msgToAr[i + 1] + " ";
+                }
+
+
+                Text text = new Text(st);
+                String firstChars = "";
+                if (st.length() > 3) {
+                    firstChars = st.substring(0, 3);
+
+                }
+
+
+                if (firstChars.equalsIgnoreCase("img")) {
+                    //for the Images
+
+                    st = st.substring(3, st.length() - 1);
+
+
+                    File file = new File(st);
+                    Image image = new Image(file.toURI().toString());
+
+                    ImageView imageView = new ImageView(image);
+
+                    imageView.setFitHeight(150);
+                    imageView.setFitWidth(200);
+
+
+                    HBox hBox = new HBox(10);
+                    hBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+
+                    if (!cmd.equalsIgnoreCase(chatName.getText())) {
+
+                        vBoxChat.setAlignment(Pos.TOP_LEFT);
+                        hBox.setAlignment(Pos.CENTER_LEFT);
+
+
+                        Text text1 = new Text("  " + cmd + " :");
+                        hBox.getChildren().add(text1);
+                        hBox.getChildren().add(imageView);
+
+                    } else {
+                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+                        hBox.getChildren().add(imageView);
+                        Text text1 = new Text(": Me ");
+                        hBox.getChildren().add(text1);
+
+
+                    }
+
+                    Platform.runLater(() -> vBoxChat.getChildren().addAll(hBox));
+
+
+                } else {
+
+                    TextFlow tempFlow = new TextFlow();
+
+
+                    if (!cmd.equalsIgnoreCase(chatName.getText() + ":")) {
+                        Text txtName = new Text(cmd + " ");
+                        txtName.getStyleClass().add("txtName");
+                        tempFlow.getChildren().add(txtName);
+
+                        tempFlow.setStyle("-fx-border-style: solid;" +
+                                "-fx-border-color: black;" +
+                                "-fx-border-radius: 10px;" +
+                                "-fx-background-color: white;" +
+                                " -fx-background-radius: 10px"
+                        );
+
+                        tempFlow.setPadding(new Insets(3,10,3,10));
+                    }
+
+                    tempFlow.getChildren().add(text);
+                    tempFlow.setMaxWidth(200);
+
+                    TextFlow flow = new TextFlow(tempFlow);
+
+                    HBox hBox = new HBox(12);
+
+
+
+
+                    if (!cmd.equalsIgnoreCase(chatName.getText() + ":")) {
+
+
+                        vBoxChat.setAlignment(Pos.TOP_LEFT);
+                        hBox.setAlignment(Pos.CENTER_LEFT);
+                        hBox.getChildren().add(flow);
+                        hBox.setPadding(new Insets(2,5,2,10));
+
+                    } else {
+
+                        Text text2 = new Text(fullMsg + ": Me");
+                        TextFlow flow2 = new TextFlow(text2);
+                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+                        hBox.getChildren().add(flow2);
+                        hBox.setPadding(new Insets(2,5,2,10));
+
+                        flow2.setStyle("-fx-color: rgb(239,242,255);" +
+                                "-fx-background-color: rgb(191,241,9);" +
+                                "-fx-background-radius: 10px");
+                        flow2.setPadding(new Insets(3,10,3,10));
+
+                    }
+
+                    Platform.runLater(() -> vBoxChat.getChildren().addAll(hBox));
+                }
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
