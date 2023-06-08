@@ -13,13 +13,18 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e04006" height="111.0" layoutX="-6.0" layoutY="-56.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" width="406.0" />
       <TextField fx:id="txtMessage" layoutX="79.0" layoutY="640.0" prefHeight="39.0" prefWidth="243.0" promptText="Enter Your Message" />
-      <ImageView fitHeight="39.0" fitWidth="36.0" layoutX="342.0" layoutY="629.0" onMouseClicked="#sendMessageOnAction" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="39.0" fitWidth="36.0" layoutX="342.0" layoutY="641.0" onMouseClicked="#sendMessageOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assets/pngwing.com%20(60).png" />
+            <Image url="@../assets/icons8-send-100.png" />
          </image>
       </ImageView>
       <Label fx:id="chatName" layoutX="155.0" layoutY="11.0" prefHeight="28.0" prefWidth="85.0" textFill="WHITE" />
       <TextArea fx:id="txtMsgArea" layoutX="14.0" layoutY="62.0" prefHeight="553.0" prefWidth="374.0" visible="false" />
       <VBox fx:id="vBoxChat" layoutX="29.0" layoutY="62.0" prefHeight="538.0" prefWidth="351.0" />
+      <ImageView fitHeight="39.0" fitWidth="48.0" layoutX="14.0" layoutY="640.0" onMouseClicked="#selectImgOnAction" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/icons8-image-96.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

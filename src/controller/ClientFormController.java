@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -14,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,6 +31,9 @@ public class ClientFormController extends Thread{
     BufferedReader reader;
     PrintWriter writer;
     Socket socket;
+
+    private FileChooser fileChooser;
+    private File filePath;
 
     public void sendMessageOnAction(MouseEvent mouseEvent) {
         String msg = txtMessage.getText();
@@ -189,4 +195,11 @@ public class ClientFormController extends Thread{
         }
     }
 
+    public void selectImgOnAction(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image");
+        this.filePath = fileChooser.showOpenDialog(stage);
+        writer.println(chatName.getText() + " " + "img" + filePath.getPath());
+    }
 }
