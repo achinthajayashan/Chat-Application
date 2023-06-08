@@ -36,17 +36,17 @@ public class Client extends Thread{
         }
         public void run() {
             try {
-                String msg;
-                while ((msg = reader.readLine()) != null) {
-                    if (msg.equalsIgnoreCase( "exit")) {
+                String message;
+                while ((message = reader.readLine()) != null) {
+                    if (message.equals("end")) {
                         break;
                     }
                     for (Client cl : clients) {
-                        cl.writer.println(msg);
+                        cl.writer.println(message);
                     }
                 }
             } catch (Exception e) {
-                // e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             finally {
                 try {
@@ -54,7 +54,7 @@ public class Client extends Thread{
                     writer.close();
                     socket.close();
                 } catch (IOException e) {
-                    // e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
 
